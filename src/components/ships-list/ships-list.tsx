@@ -16,7 +16,7 @@ const ShipsList: React.FC<ShipsListProps> = (props) => {
   React.useEffect(() => {
     const startIndex = (page - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    setVehiclesToShow(vehicles.slice(startIndex, endIndex));
+    setVehiclesToShow(vehicles.slice(1, endIndex));
   }, [page, vehicles]);
 
   const handleLoadMore = () => {
