@@ -27,13 +27,20 @@ const ShipsList: React.FC<ShipsListProps> = (props) => {
 
   return (
     <div className="ships-list">
-      <ul className="ships-list_list">
+      <ul className="ships-list__list">
         {vehiclesToShow.map((vehicle, index) => (
           <li key={index}>
             {vehicle.title}
           </li>
         ))}
       </ul>
+      <button
+        className="ship-list__button"
+        type="button"
+        onClick={handleLoadMore}
+      >
+        Load more
+      </button>
     </div>
   )
 };
