@@ -1,5 +1,6 @@
 import React from 'react';
 import { Vehicle } from 'types';
+import ShipsCard from '../ships-card/ships-card';
 
 interface ShipsListProps {
   vehicles: Vehicle[];
@@ -29,9 +30,10 @@ const ShipsList: React.FC<ShipsListProps> = (props) => {
     <div className="ships-list">
       <ul className="ships-list__list">
         {vehiclesToShow.map((vehicle, index) => (
-          <li key={index}>
-            {vehicle.title}
-          </li>
+          <ShipsCard
+            vehicle={vehicle}
+            key={index}
+          />
         ))}
       </ul>
       <button

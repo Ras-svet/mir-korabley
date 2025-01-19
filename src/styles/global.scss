@@ -1,3 +1,6 @@
+@import '../components/ships-card/style.scss';
+@import '../components/ships-list/style.scss';
+
 body {
   color: #b2b5ba;
   font-family: Roboto, Helvetica, Arial, sans-serif;
@@ -5,7 +8,7 @@ body {
   min-height: 100%;
   border: 0;
   margin: 0;
-  padding: 0;
+  padding: 100px 20px;
   background-color: rgb(1, 10, 25);
   position: relative;
   overflow-x: hidden;
