@@ -10,6 +10,9 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    alias: {
+      assets: path.resolve(__dirname, 'public/assets'),
+    },
   },
   module: {
     rules: [
@@ -24,9 +27,10 @@ module.exports = {
       },
       {
         test: /\.(png|jpe?g|gif|svg)$/i,
+        include: path.resolve(__dirname, 'public'),
         type: 'asset/resource',
         generator: {
-          filename: 'images/[name][ext]',
+          filename: 'assets/icons/[name][ext]',
         },
       },
       {

@@ -5,8 +5,8 @@ import ShipsPage from './pages/ships-page/ships-page';
 
 const App: React.FC = () => (
   <div className="app">
-    <h1 className="app_title">
-      Мир Кораблей
+    <h1 className="app__title">
+      Кораблеведение
     </h1>
     <ShipsPage />
   </div>

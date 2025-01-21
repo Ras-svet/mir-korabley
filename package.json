@@ -1,5 +1,5 @@
 {
-  "name": "mir-tankov",
+  "name": "mir-korabley",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -16,6 +16,7 @@
   "dependencies": {
     "@apollo/client": "^3.12.6",
     "@reduxjs/toolkit": "^2.5.0",
+    "classnames": "^2.5.1",
     "graphql": "^16.10.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

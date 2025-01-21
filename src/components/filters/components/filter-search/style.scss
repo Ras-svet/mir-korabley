@@ -1,0 +1,33 @@
+.filter-search {
+  padding: 10px;
+  border-radius: 4px;
+  background-color: transparent;
+  border: 1px solid #ccc;
+  color: #fff;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 10px;
+    display: block;
+    background-image: url('~assets/icons/search-icon.svg');
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  &__input {
+    margin-right: 40px;
+    background-color: transparent;
+    border: 0;
+    color: #fff;
+    outline: none;
+    font-size: 16px;
+    line-height: 18px;
+  }
+}

@@ -1,3 +1,6 @@
+@import '../ships-card/style.scss';
+@import '../empty-list/style.scss';
+
 .ships-list {
   display: block;
   &__list {
@@ -10,7 +13,7 @@
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 920px) {
   .ships-list__list {
     grid-template-columns: repeat(3, 1fr);
   }

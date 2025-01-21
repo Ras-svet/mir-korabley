@@ -1,7 +1,8 @@
 import React from 'react';
 import { Vehicle } from 'types';
-import Filter from './components/filter';
+import Filter from './components/filter/filter';
 import { INFO_TITLES } from '../../constants/ships-card';
+import FilterSearch from './components/filter-search/filter-search';
 
 interface FiltersProps {
   vehicles: Vehicle[];
@@ -9,69 +10,77 @@ interface FiltersProps {
 }
 
 const Filters: React.FC<FiltersProps> = ({ vehicles, onFilteredVehiclesChange }) => {
-  const [typeFilter, setTypeFilter] = React.useState<string | null>(null);
-  const [levelFilter, setLevelFilter] = React.useState<string | null>(null);
-  const [nationFilter, setNationFilter] = React.useState<string | null>(null);
-
-  const [searchType, setSearchType] = React.useState('');
-  const [searchLevel, setSearchLevel] = React.useState('');
-  const [searchNation, setSearchNation] = React.useState('');
+  const [typeFilters, setTypeFilters] = React.useState<(string)[]>([]);
+  const [levelFilters, setLevelFilters] = React.useState<(string)[]>([]);
+  const [nationFilters, setNationFilters] = React.useState<(string)[]>([]);
+  const [searchString, setSearchString] = React.useState<string>('');
 
   const uniqueNations = React.useMemo(() => {
     return [...new Set(vehicles.map((vehicle) => vehicle.nation.title))]
-      .filter((nation) => nation.toLowerCase().startsWith(searchNation.toLowerCase()));
-  }, [vehicles, searchNation]);
+  }, [vehicles]);
 
   const uniqueTypes = React.useMemo(() => {
     return [...new Set(vehicles.map((vehicle) => vehicle.type.title))]
-      .filter((type) => type.toLowerCase().startsWith(searchType.toLowerCase()));
-  }, [vehicles, searchType]);
+  }, [vehicles]);
 
   const uniqueLevels = React.useMemo(() => {
     return [...new Set(vehicles.map((vehicle) => vehicle.level.toString()))]
-      .filter((level) => level.toLowerCase().startsWith(searchLevel.toLowerCase()));
-  }, [vehicles, searchLevel]);
+  }, [vehicles]);
+
+  const handleSetFilters = (
+    setFilters: React.Dispatch<React.SetStateAction<(string)[]>>,
+    value: string
+  ) => {
+    setFilters((prevFilters) => {
+      if (prevFilters.includes(value)) {
+        return prevFilters.filter((filter) => filter !== value);
+      }
+      return [...prevFilters, value];
+    });
+  };
 
   const handleSelectFilter = (value: string, filterName: string) => {
     switch (filterName) {
       case INFO_TITLES.TYPE:
-        setTypeFilter(value);
-        setSearchType('');
+        handleSetFilters(setTypeFilters, value)
         break;
       case INFO_TITLES.LEVEL:
-        setLevelFilter(value);
-        setSearchLevel('')
+        handleSetFilters(setLevelFilters, value)
         break;
       case INFO_TITLES.NATION:
-        setNationFilter(value);
-        setSearchNation('');
+        handleSetFilters(setNationFilters, value)
         break;
     }
   }
 
-  const handleSearchFilter = (value: string, filterName: string) => {
-    switch (filterName) {
-      case INFO_TITLES.TYPE:
-        setSearchType(value);
-        break;
-      case INFO_TITLES.LEVEL:
-        setSearchLevel(value);
-        break;
-      case INFO_TITLES.NATION:
-        setSearchNation(value);
-        break;
-    }
-  }
+  const handleChangeSearchString = (value: string) => {
+    setSearchString(value);
+  };
 
   const filteredVehicles = React.useMemo(() => {
     return vehicles.filter((vehicle) => {
-      return (
-        (!typeFilter || vehicle.type.title === typeFilter) &&
-        (!levelFilter || vehicle.level.toString() === levelFilter) &&
-        (!nationFilter || vehicle.nation.title === nationFilter)
-      );
+      const matchesTypeFilter =
+        typeFilters.length === 0 || typeFilters.some((filter) => filter === vehicle.type.title);
+  
+      const matchesLevelFilter =
+        levelFilters.length === 0 || levelFilters.some((filter) => Number(filter) === vehicle.level);
+  
+      const matchesNationFilter =
+        nationFilters.length === 0 || nationFilters.some((filter) => filter === vehicle.nation.title);
+      
+      const matchesSearchString =
+        searchString === '' || vehicle.title.startsWith(searchString);
+  
+      return matchesTypeFilter && matchesLevelFilter && matchesNationFilter && matchesSearchString;
     });
-  }, [vehicles, typeFilter, levelFilter, nationFilter]);
+  }, [
+    vehicles,
+    typeFilters,
+    levelFilters,
+    nationFilters,
+    searchString,
+  ]);
+  
 
   React.useEffect(() => {
     onFilteredVehiclesChange(filteredVehicles);
@@ -79,27 +88,29 @@ const Filters: React.FC<FiltersProps> = ({ vehicles, onFilteredVehiclesChange })
 
   return (
     <div className="filters">
-      <Filter
-        filterType={INFO_TITLES.TYPE}
-        onSelectFilter={handleSelectFilter}
-        uniqueValues={uniqueTypes}
-        selectedFilter={typeFilter}
-        onSearchFilter={handleSearchFilter}
-      />
-      <Filter
-        filterType={INFO_TITLES.LEVEL}
-        onSelectFilter={handleSelectFilter}
-        uniqueValues={uniqueLevels}
-        selectedFilter={levelFilter}
-        onSearchFilter={handleSearchFilter}
-      />
-      <Filter
-        filterType={INFO_TITLES.NATION}
-        onSelectFilter={handleSelectFilter}
-        uniqueValues={uniqueNations}
-        selectedFilter={nationFilter}
-        onSearchFilter={handleSearchFilter}
-      />
+      <div className="filters-right">
+        <Filter
+          filterType={INFO_TITLES.TYPE}
+          onSelectFilter={handleSelectFilter}
+          uniqueValues={uniqueTypes}
+          selectedFilters={typeFilters}
+        />
+        <Filter
+          filterType={INFO_TITLES.LEVEL}
+          onSelectFilter={handleSelectFilter}
+          uniqueValues={uniqueLevels}
+          selectedFilters={levelFilters}
+        />
+        <Filter
+          filterType={INFO_TITLES.NATION}
+          onSelectFilter={handleSelectFilter}
+          uniqueValues={uniqueNations}
+          selectedFilters={nationFilters}
+        />
+      </div>
+      <div className="filters-left">
+        <FilterSearch onSearch={handleChangeSearchString} />
+      </div>
     </div>
   );
 };
