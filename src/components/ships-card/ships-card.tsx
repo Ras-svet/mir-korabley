@@ -8,7 +8,7 @@ interface ShipsCardProps {
 
 const ShipsCard: React.FC<ShipsCardProps> = ({ vehicle }) => {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = React.useState(false);
-  const [isHovered, setIsHovered] = React.useState(false); // Отслеживаем hover
+  const [isHovered, setIsHovered] = React.useState(false);
   const descriptionRef = React.useRef<HTMLParagraphElement | null>(null);
   const [isTextOverflowing, setIsTextOverflowing] = React.useState(false);
 

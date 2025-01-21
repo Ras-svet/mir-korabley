@@ -3,7 +3,7 @@ import { Vehicle } from 'types';
 import ShipsCard from '../ships-card/ships-card';
 
 interface ShipsListProps {
-  vehicles: Vehicle[];
+  vehicles: Vehicle[] | [];
 }
 
 const ShipsList: React.FC<ShipsListProps> = (props) => {

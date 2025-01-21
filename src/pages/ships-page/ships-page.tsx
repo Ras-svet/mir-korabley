@@ -3,6 +3,7 @@ import { useVehicles } from '../../hooks/use-vehicles';
 import { ERRORS } from '../../constants/errors';
 import ShipsList from '../../components/ships-list/ships-list';
 import { Vehicle } from 'types';
+import Filters from '../../components/filters/filters';
 
 const ShipsPage = () => {
   const {
@@ -11,6 +12,8 @@ const ShipsPage = () => {
     error
   } = useVehicles();
 
+  const [ filteredVehicles, setFilteredVehicles ] = React.useState<Vehicle[]>(vehicles);
+
   if (error) {
     return (ERRORS.WENT_WRONG)
   }
@@ -18,9 +21,17 @@ const ShipsPage = () => {
     return 'Loading ...'
   }
 
+  const handleFilterVehicles = (filteredVehicles: Vehicle[] | []) => {
+    setFilteredVehicles(filteredVehicles);
+  };
+
   return (
     <div className="ships-page">
-      <ShipsList vehicles={vehicles as Vehicle[]} />
+      <Filters
+        vehicles={vehicles}
+        onFilteredVehiclesChange={handleFilterVehicles}
+      />
+      <ShipsList vehicles={filteredVehicles as Vehicle[]} />
     </div>
   )
 }
