@@ -116,8 +116,17 @@ const Filters: React.FC<FiltersProps> = (props) => {
   }, [sortKey, sortDirection]);
 
   React.useEffect(() => {
-    onFilteredVehiclesChange(filteredVehicles && sortedVehicles);
-  }, [filteredVehicles, sortedVehicles]);
+    if (!filteredVehicles.length || !sortedVehicles.length) {
+      onFilteredVehiclesChange([]);
+      return;
+    }
+
+    const sortedAndFilteredVehicles = sortedVehicles.filter((sortedItem) =>
+      filteredVehicles.some((filteredItem) => filteredItem.title === sortedItem.title)
+    );
+  
+    onFilteredVehiclesChange(sortedAndFilteredVehicles);
+  }, [filteredVehicles, sortedVehicles, onFilteredVehiclesChange]);
   
   const handleChangeListType = (listType: ListType) => {
     onChangeListType(listType);
