@@ -79,7 +79,7 @@ const Filters: React.FC<FiltersProps> = (props) => {
         nationFilters.length === 0 || nationFilters.some((filter) => filter === vehicle.nation.title);
       
       const matchesSearchString =
-        searchString === '' || vehicle.title.startsWith(searchString);
+        searchString === '' || vehicle.title.toLowerCase().startsWith(searchString.toLowerCase());
   
       return matchesTypeFilter && matchesLevelFilter && matchesNationFilter && matchesSearchString;
     });
