@@ -1,19 +1,29 @@
 import React from 'react';
-import { Vehicle } from 'types';
-import ShipsCard from '../ships-card/ships-card';
+import {
+  ListType,
+  Vehicle,
+ } from 'types';
 import {
   DESKTOP_PER_PAGE,
   MOBILE_PER_PAGE,
   TABLET_PER_PAGE,
 } from '../../constants/ships-card';
 import EmptyList from '../empty-list/empty-list';
+import ShipsGrid from './components/ships-grid/ships-grid';
+import { LIST_TYPES } from '../../constants/global';
+import ShipsTable from './components/ships-table/ships-table';
+import { ERRORS } from '../../constants/errors';
 
 interface ShipsListProps {
   vehicles: Vehicle[] | [];
+  listType: ListType;
 }
 
 const ShipsList: React.FC<ShipsListProps> = (props) => {
-  const { vehicles } = props;
+  const {
+    vehicles,
+    listType,
+  } = props;
   const [vehiclesToShow, setVehiclesToShow] = React.useState<Vehicle[]>([]);
   const [page, setPage] = React.useState(1);
   const [windowWidth, setWindowWidth] = React.useState<number>(window.innerWidth);
@@ -38,6 +48,10 @@ const ShipsList: React.FC<ShipsListProps> = (props) => {
     }
   };
 
+  const handleChangePage = (page: number) => {
+    setPage(page);
+  };
+
   React.useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -52,38 +66,48 @@ const ShipsList: React.FC<ShipsListProps> = (props) => {
   React.useEffect(() => {
     const startIndex = (page - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    setVehiclesToShow(vehicles.slice(0, endIndex));
+    if (listType === LIST_TYPES.GRID) {
+      setVehiclesToShow(vehicles.slice(0, endIndex));
+    } else if (listType === LIST_TYPES.TABLE) {
+      setVehiclesToShow(vehicles.slice(startIndex, endIndex));
+    }
   }, [
     page,
     vehicles,
     itemsPerPage,
+    listType,
   ]);
+
+  React.useEffect(() => {
+    setPage(1);
+  }, [listType]);
 
   return (
     <div className="ships-list">
       {Array.isArray(vehicles) && vehicles.length > 0 && (
         <>
-          <ul className="ships-list__list">
-            {vehiclesToShow?.map((vehicle, index) => (
-              <ShipsCard
-                vehicle={vehicle}
-                key={index}
-              />
-            ))}
-          </ul>
-          <button
-            className="ship-list__button"
-            type="button"
-            onClick={handleLoadMore}
-          >
-            Load more
-          </button>
+          {listType === LIST_TYPES.GRID && (
+            <ShipsGrid
+              onLoadMore={handleLoadMore}
+              vehiclesToShow={vehiclesToShow}
+              currentPage={page}
+              totalPages={totalPages}
+            />
+          )}
+          {listType === LIST_TYPES.TABLE && (
+            <ShipsTable
+              onChangePage={handleChangePage}
+              vehiclesToShow={vehiclesToShow}
+              totalPages={totalPages}
+              currentPage={page}
+            />
+          )}
         </>
       )}
       {Array.isArray(vehicles) && vehicles.length === 0 && (
         <EmptyList
           isEmpty={true}
-          emptyText={'No ships'}
+          emptyText={ERRORS.EMPTY_LIST}
         />
       )}
     </div>

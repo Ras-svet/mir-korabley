@@ -1,15 +1,25 @@
 import React from 'react';
-import { Vehicle } from 'types';
+import { ListType, Vehicle } from 'types';
+import cn from 'classnames';
 import Filter from './components/filter/filter';
 import { INFO_TITLES } from '../../constants/ships-card';
 import FilterSearch from './components/filter-search/filter-search';
+import { LIST_TYPES } from '../../constants/global';
 
 interface FiltersProps {
   vehicles: Vehicle[];
   onFilteredVehiclesChange: (filteredVehicles: Vehicle[]) => void;
+  onChangeListType: (listType: ListType) => void;
+  activeFilter: ListType;
 }
 
-const Filters: React.FC<FiltersProps> = ({ vehicles, onFilteredVehiclesChange }) => {
+const Filters: React.FC<FiltersProps> = (props) => {
+  const {
+    vehicles,
+    onFilteredVehiclesChange,
+    onChangeListType,
+    activeFilter,
+  } = props;
   const [typeFilters, setTypeFilters] = React.useState<(string)[]>([]);
   const [levelFilters, setLevelFilters] = React.useState<(string)[]>([]);
   const [nationFilters, setNationFilters] = React.useState<(string)[]>([]);
@@ -80,11 +90,14 @@ const Filters: React.FC<FiltersProps> = ({ vehicles, onFilteredVehiclesChange })
     nationFilters,
     searchString,
   ]);
-  
 
   React.useEffect(() => {
     onFilteredVehiclesChange(filteredVehicles);
-  }, [filteredVehicles, onFilteredVehiclesChange]);
+  }, [filteredVehicles]);
+  
+  const handleChangeListType = (listType: ListType) => {
+    onChangeListType(listType);
+  };
 
   return (
     <div className="filters">
@@ -110,6 +123,26 @@ const Filters: React.FC<FiltersProps> = ({ vehicles, onFilteredVehiclesChange })
       </div>
       <div className="filters-left">
         <FilterSearch onSearch={handleChangeSearchString} />
+        <div className="filters-left__types">
+          <button
+            className={cn(
+              'filters-left__types-button',
+              'filters-left__types-button_grid',
+              activeFilter === LIST_TYPES.GRID && 'filters-left__types-button_active',
+            )}
+            type="button"
+            onClick={() => handleChangeListType(LIST_TYPES.GRID)}
+          />
+          <button
+            className={cn(
+              'filters-left__types-button',
+              'filters-left__types-button_table',
+              activeFilter === LIST_TYPES.TABLE && 'filters-left__types-button_active',
+            )}
+            type="button"
+            onClick={() => handleChangeListType(LIST_TYPES.TABLE)}
+          />
+        </div>
       </div>
     </div>
   );

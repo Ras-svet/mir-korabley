@@ -3,10 +3,67 @@
 
 .filters {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 10px;
+
+  @media screen and (min-width: 768px) {
+    flex-direction: row;
+    gap: 0;
+    justify-content: space-between;
+  }
 
   &-right {
     display: flex;
+    flex-direction: column;
     gap: 10px;
+
+    @media screen and (min-width: 768px) {
+      flex-direction: row;
+    }
+  }
+
+  &-left {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    &__types {
+      display: flex;
+      gap: 10px;
+      align-self: end;
+
+      &-button {
+        background-color: transparent;
+        border: 1px solid #ccc;
+        padding: 5px;
+        border-radius: 4px;
+        width: 40px;
+        height: 40px;
+        transition: 0.3s all ease-in-out;
+        cursor: pointer;
+
+        &_grid {
+          background-image: url('~assets/icons/grid-button.svg');
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: 30px;
+        }
+
+        &_table {
+          background-image: url('~assets/icons/table-button.svg');
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: 30px;
+        }
+
+        &_active {
+          background-color: #1c4489b4;
+        }
+
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
+    }
   }
 }

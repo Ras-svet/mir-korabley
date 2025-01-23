@@ -31,4 +31,6 @@ declare module 'types' {
     type: VehicleType;
     icons: Icons;
   }
+
+  type ListType = keyof typeof LIST_TYPES;
 }
