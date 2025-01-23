@@ -34,6 +34,21 @@
       padding: 8px;
       background-color: transparent;
       text-align: left;
+      position: relative;
+      padding-left: 30px;
+
+      &::before {
+        content: '🠇';
+        font-size: 16px;
+        color: #ccc;
+        position: absolute;
+        left: 10px;
+        top: 5px;
+      }
+
+      &.ships-list__table-th_active::before {
+        transform: rotate(180deg);
+      }
     }
   }
 

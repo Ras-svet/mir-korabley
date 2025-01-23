@@ -17,12 +17,18 @@ import { ERRORS } from '../../constants/errors';
 interface ShipsListProps {
   vehicles: Vehicle[] | [];
   listType: ListType;
+  handleSort: (key: string) => void;
+  sortKey: string;
+  sortDirection: string;
 }
 
 const ShipsList: React.FC<ShipsListProps> = (props) => {
   const {
     vehicles,
     listType,
+    handleSort,
+    sortKey,
+    sortDirection,
   } = props;
   const [vehiclesToShow, setVehiclesToShow] = React.useState<Vehicle[]>([]);
   const [page, setPage] = React.useState(1);
@@ -100,6 +106,9 @@ const ShipsList: React.FC<ShipsListProps> = (props) => {
               vehiclesToShow={vehiclesToShow}
               totalPages={totalPages}
               currentPage={page}
+              onSort={handleSort}
+              sortKey={sortKey}
+              sortDirection={sortDirection}
             />
           )}
         </>

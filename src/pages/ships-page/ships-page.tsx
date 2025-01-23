@@ -13,6 +13,8 @@ const ShipsPage = () => {
 
   const [filteredVehicles, setFilteredVehicles] = React.useState<Vehicle[]>(vehicles);
   const [listType, setListType] = React.useState<ListType>('GRID');
+  const [sortKey, setSortKey] = React.useState<string>('');
+  const [sortDirection, setSortDirection] = React.useState<'asc'|'desc'>('asc');
 
   if (error) {
     return ERRORS.WENT_WRONG;
@@ -26,6 +28,17 @@ const ShipsPage = () => {
     setFilteredVehicles(filteredVehicles);
   };
 
+  const handleSort = (key: string) => {
+    setSortKey(key);
+    setSortDirection((prev) => {
+      if (prev === 'asc') {
+        return 'desc'
+      } else {
+        return 'asc'
+      }
+    })
+  };
+
   const handleChangeListType = (listType: ListType) => {
     setListType(listType);
   };
@@ -37,10 +50,15 @@ const ShipsPage = () => {
         onFilteredVehiclesChange={handleFilterVehicles}
         onChangeListType={handleChangeListType}
         activeFilter={listType}
+        sortKey={sortKey}
+        sortDirection={sortDirection}
       />
       <ShipsList
         vehicles={filteredVehicles as Vehicle[]}
         listType={listType}
+        handleSort={handleSort}
+        sortKey={sortKey}
+        sortDirection={sortDirection}
       />
     </div>
   );

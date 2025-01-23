@@ -11,6 +11,8 @@ interface FiltersProps {
   onFilteredVehiclesChange: (filteredVehicles: Vehicle[]) => void;
   onChangeListType: (listType: ListType) => void;
   activeFilter: ListType;
+  sortKey: string;
+  sortDirection: string;
 }
 
 const Filters: React.FC<FiltersProps> = (props) => {
@@ -19,11 +21,14 @@ const Filters: React.FC<FiltersProps> = (props) => {
     onFilteredVehiclesChange,
     onChangeListType,
     activeFilter,
+    sortKey,
+    sortDirection,
   } = props;
   const [typeFilters, setTypeFilters] = React.useState<(string)[]>([]);
   const [levelFilters, setLevelFilters] = React.useState<(string)[]>([]);
   const [nationFilters, setNationFilters] = React.useState<(string)[]>([]);
   const [searchString, setSearchString] = React.useState<string>('');
+  const [sortedVehicles, setSortedVehicles] = React.useState<Vehicle[]>(vehicles);
 
   const uniqueNations = React.useMemo(() => {
     return [...new Set(vehicles.map((vehicle) => vehicle.nation.title))]
@@ -92,8 +97,27 @@ const Filters: React.FC<FiltersProps> = (props) => {
   ]);
 
   React.useEffect(() => {
-    onFilteredVehiclesChange(filteredVehicles);
-  }, [filteredVehicles]);
+    if (sortKey !== '') {
+      setSortedVehicles((prevVehicles) => {
+        const sortedVehicles = [...prevVehicles].sort((a, b) => {
+          const aValue = a[sortKey];
+          const bValue = b[sortKey];
+
+          const aTitle = typeof aValue === 'object' && aValue?.title ? aValue.title : aValue;
+          const bTitle = typeof bValue === 'object' && bValue?.title ? bValue.title : bValue;
+
+          if (aTitle < bTitle) return sortDirection === 'asc' ? -1 : 1;
+          if (aTitle > bTitle) return sortDirection === 'asc' ? 1 : -1;
+          return 0;
+        });
+        return sortedVehicles;
+      });
+    }
+  }, [sortKey, sortDirection]);
+
+  React.useEffect(() => {
+    onFilteredVehiclesChange(filteredVehicles && sortedVehicles);
+  }, [filteredVehicles, sortedVehicles]);
   
   const handleChangeListType = (listType: ListType) => {
     onChangeListType(listType);

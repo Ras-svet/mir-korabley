@@ -1,5 +1,6 @@
 import React from 'react';
 import { Vehicle } from 'types';
+import cn from 'classnames';
 import { countryNameMap } from '../../../../utils/countryNameMap';
 import { INFO_TITLES } from '../../../../constants/ships-card';
 
@@ -8,6 +9,9 @@ interface ShipsTableProps {
   vehiclesToShow: Vehicle[];
   totalPages: number;
   currentPage: number;
+  onSort: (key: string) => void
+  sortKey: string;
+  sortDirection: string;
 }
 
 const ShipsTable: React.FC<ShipsTableProps> = (props) => {
@@ -16,6 +20,9 @@ const ShipsTable: React.FC<ShipsTableProps> = (props) => {
     vehiclesToShow,
     totalPages,
     currentPage,
+    onSort,
+    sortKey,
+    sortDirection,
   } = props;
 
   const handleNextPage = () => {
@@ -26,21 +33,45 @@ const ShipsTable: React.FC<ShipsTableProps> = (props) => {
     onChangePage(currentPage - 1);
   }
 
+  const handleSort = (key: string) => {
+    onSort(key);
+  };
+
   return (
     <div className="ships-list__table-block">
       <table className="ships-list__table">
         <thead>
           <tr>
-            <th>
+            <th
+              className={cn(
+                sortKey === 'nation' && sortDirection === 'desc' && 'ships-list__table-th_active',
+              )}
+              onClick={() => handleSort('nation')}
+            >
               {INFO_TITLES.NATION}
             </th>
-            <th>
+            <th
+              className={cn(
+                sortKey === 'title' && sortDirection === 'desc' && 'ships-list__table-th_active',
+              )}
+              onClick={() => handleSort('title')}
+            >
               {INFO_TITLES.NAME}
             </th>
-            <th>
+            <th
+              className={cn(
+                sortKey === 'type' && sortDirection === 'desc' && 'ships-list__table-th_active',
+              )}
+              onClick={() => handleSort('type')}
+            >
               {INFO_TITLES.TYPE}
             </th>
-            <th>
+            <th
+              className={cn(
+                sortKey === 'level' && 'ships-list__table-th_active',
+              )}
+              onClick={() => handleSort('level')}
+            >
               {INFO_TITLES.LEVEL}
             </th>
           </tr>
