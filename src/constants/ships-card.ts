@@ -2,6 +2,7 @@ export const INFO_TITLES = {
   NATION: 'Нация',
   TYPE: 'Тип',
   LEVEL: 'Уровень',
+  NAME: 'Название'
 };
 
 export const DESKTOP_PER_PAGE = {

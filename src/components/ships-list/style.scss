@@ -1,26 +1,24 @@
-@import '../ships-card/style.scss';
+@import './components/ships-grid/style.scss';
 @import '../empty-list/style.scss';
+@import './components/ships-table/style.scss';
 
 .ships-list {
   display: block;
-  &__list {
-    display: grid;
-    gap: 10px;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    padding: 20px;
-    list-style: none;
-    margin: 0;
-  }
-}
 
-@media (min-width: 920px) {
-  .ships-list__list {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
+  &__button {
+    background: transparent;
+    color: #ccc;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px 30px;
+    transition: 0.3s all ease-in-out;
+    margin: 0 auto;
 
-@media (min-width: 1200px) {
-  .ships-list__list {
-    grid-template-columns: repeat(4, 1fr);
+    &:hover {
+      cursor: pointer;
+      transform: scale(1.1);
+      background-color: #ccc;
+      color: rgb(1, 10, 25);
+    }
   }
 }

@@ -1,0 +1,83 @@
+.ships-list__table-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.ships-list__table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 70px;
+
+  &-buttons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  &-button {
+    background: transparent;
+    color: #fff;
+    border: none;
+    font-size: 40px;
+
+    &:hover {
+      animation: pulse 1s infinite;
+      cursor: pointer;
+    }
+  }
+
+  thead {
+    th {
+      border: 1px solid #ccc;
+      padding: 8px;
+      background-color: transparent;
+      text-align: left;
+    }
+  }
+
+  tbody {
+    td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+
+      &.ships-list__table-cell {
+        text-align: center;
+
+        img {
+          width: 32px;
+          height: 20px;
+          margin-bottom: 4px;
+        }
+      }
+    }
+
+    tr {
+      &:nth-child(even) {
+        background-color: #0c0d2697;
+      }
+
+      &:nth-child(odd) {
+        background-color: #0f273d98;
+      }
+
+      &:hover {
+        background-color: #05afff7a;
+      }
+    }
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
